@@ -96,14 +96,14 @@ const allbooks = {
 };
 
 const vols = [
-  ["bom", "Book of Mormon"],
-  ["dc", "Doctrine and Covenants"],
-  ["pgp", "Pearl of Great Price"],
-  ["nt", "New Testament"],
+  "Book of Mormon",
+  "Doctrine and Covenants",
+  "Pearl of Great Price",
+  "New Testament",
 ];
 
 const volbooks = {
-  bom: [
+  "Book of Mormon": [
     "1 Nephi",
     "2 Nephi",
     "Jacob",
@@ -120,8 +120,8 @@ const volbooks = {
     "Ether",
     "Moroni",
   ],
-  pgp: ["Moses", "Abraham", "JS Matthew", "JS History"],
-  nt: [
+  "Pearl of Great Price": ["Moses", "Abraham", "JS Matthew", "JS History"],
+  "New Testament": [
     "Matthew",
     "Mark",
     "Luke",
@@ -149,7 +149,7 @@ const volbooks = {
     "Jude",
     "Revelations",
   ],
-  dc: [],
+  "Doctrine and Covenants": [],
 };
 
 export default allbooks;
