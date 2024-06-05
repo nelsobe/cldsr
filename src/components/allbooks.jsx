@@ -113,7 +113,7 @@ const volbooks = {
     "Words of Mormon",
     "Mosiah",
     "Alma",
-    "Heleman",
+    "Helaman",
     "3 Nephi",
     "4 Nephi",
     "Mormon",

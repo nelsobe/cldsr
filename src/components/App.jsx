@@ -27,6 +27,7 @@ function App() {
   const [booksMenuVis, setBooksMenuVis] = useState(false);
   const [langsMenuVis, setLangsMenuVis] = useState(false);
   const [siz, setSiz] = useState(16);
+  const [colors, setColors] = useState(true);
 
   function jsnav(event) {
     let newChap;
@@ -35,6 +36,7 @@ function App() {
     const bookRecord = allbooks[loc.book];
     newChap = Math.max(Math.min(newChap, bookRecord.end), bookRecord.start);
     setLoc({ ...loc, chap: newChap });
+    load(langs[0], langs[1], langs[2], loc.book, newChap);
   }
 
   function jsselOpen(event) {
@@ -44,6 +46,7 @@ function App() {
   function jsselClose(newvol, newbook, newchap) {
     setBooksMenuVis(false);
     setLoc({ book: newbook, chap: newchap });
+    load(langs[0], langs[1], langs[2], newbook, newchap);
     console.log("Got back: ", newvol, newbook, newchap);
   }
 
@@ -51,15 +54,16 @@ function App() {
     setLangsMenuVis(true);
   }
   //
-  async function jslangsClose(lang0, lang1, lang2) {
+  function jslangsClose(lang0, lang1, lang2) {
     setLangsMenuVis(false);
     if (lang1 === "None") {
       lang1 = lang2;
       lang2 = "None";
     }
-    await setLangs([lang0, lang1, lang2]);
-    console.log("Langs: ", lang0, lang1, lang2);
-    console.log("Langs: ", langs);
+    setLangs([lang0, lang1, lang2]);
+    load(lang0, lang1, lang2, loc.book, loc.chap);
+    // console.log("Langs: ", lang0, lang1, lang2);
+    // console.log("Langs: ", langs);
   }
 
   function loadAndRender() {
@@ -70,7 +74,10 @@ function App() {
     console.log("Fetching: ", vl, bk, ch);
   }
 
-  function jscolors(event) {}
+  function jscolors(event) {
+    console.log(!colors);
+    setColors(!colors);
+  }
 
   function jssiz(event) {
     var newsiz;
@@ -82,22 +89,39 @@ function App() {
 
   function jsabout(event) {}
 
-  useEffect(() => {
-    fetch("http://localhost:5173/contents/eng/1Ne/1.txt")
+  function load(lang0, lang1, lang2, book, chap) {
+    const vl = allbooks[book].vol;
+    const bk = allbooks[book].id;
+    console.log("load: ", lang0);
+    let ch0, ch1, ch2;
+    if (["simp", "trad"].includes(lang0)) ch0 = "c" + chap;
+    else ch0 = chap;
+    if (["simp", "trad"].includes(lang1)) ch1 = "c" + chap;
+    else ch1 = chap;
+    if (["simp", "trad"].includes(lang2)) ch2 = "c" + chap;
+    else ch2 = chap;
+
+    console.log("Fetching: ", lang0, lang1, lang2, vl, bk, ch1);
+
+    fetch(`http://localhost:5173/contents/${lang0}/${bk}/${ch0}.txt`)
       .then((response) => response.text())
       .then((data) => setText0(data));
 
-    if (langs[1] != "None")
-      fetch("http://localhost:5173/contents/trad/1Ne/c1.txt")
+    if (lang1 != "None")
+      fetch(`http://localhost:5173/contents/${lang1}/${bk}/${ch1}.txt`)
         .then((response) => response.text())
         .then((data) => setText1(data));
     else setText1("None");
 
-    if (langs[2] != "None")
-      fetch("http://localhost:5173/contents/simp/1Ne/c1.txt")
+    if (lang2 != "None")
+      fetch(`http://localhost:5173/contents/${lang2}/${bk}/${ch2}.txt`)
         .then((response) => response.text())
         .then((data) => setText2(data));
     else setText2("None");
+  }
+
+  useEffect(() => {
+    load(langs[0], langs[1], langs[2], loc.book, loc.chap);
   }, []);
 
   return (
@@ -109,12 +133,18 @@ function App() {
         jsnav={jsnav}
         jssel={jsselOpen}
         jslangs={jslangsOpen}
-        jscolosr={jscolors}
+        jscolors={jscolors}
         jssiz={jssiz}
         jsabout={jsabout}
       />
       <Title loc={loc} siz={siz} />
-      <MainBody siz={siz} text0={text0} text1={text1} text2={text2} />
+      <MainBody
+        siz={siz}
+        text0={text0}
+        text1={text1}
+        text2={text2}
+        colors={colors}
+      />
       {/* <Footer siz={siz} /> */}
     </div>
   );
