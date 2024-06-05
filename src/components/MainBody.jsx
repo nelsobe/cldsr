@@ -49,14 +49,14 @@ export default function MainBody(props) {
                 <th
                   key={"0"}
                   dangerouslySetInnerHTML={{
-                    __html: tmp0.length == tmp0.length ? tmp0[idx] : null,
+                    __html: tmp0[0] != "None" ? tmp0[idx] : null,
                   }}
                 />
               ) : (
                 <td
                   key={"0"}
                   dangerouslySetInnerHTML={{
-                    __html: tmp0.length == tmp0.length ? tmp0[idx] : null,
+                    __html: tmp0[0] != "None" ? tmp0[idx] : null,
                   }}
                 />
               )}
@@ -64,14 +64,14 @@ export default function MainBody(props) {
                 <th
                   key={"1"}
                   dangerouslySetInnerHTML={{
-                    __html: tmp1.length == tmp0.length ? tmp1[idx] : null,
+                    __html: tmp1[0] != "None" ? tmp1[idx] : null,
                   }}
                 />
               ) : (
                 <td
                   key={"1"}
                   dangerouslySetInnerHTML={{
-                    __html: tmp1.length == tmp0.length ? tmp1[idx] : null,
+                    __html: tmp1[0] != "None" ? tmp1[idx] : null,
                   }}
                 />
               )}
@@ -79,14 +79,14 @@ export default function MainBody(props) {
                 <th
                   key={"2"}
                   dangerouslySetInnerHTML={{
-                    __html: tmp2.length == tmp0.length ? tmp2[idx] : null,
+                    __html: tmp2[0] != "None" ? tmp2[idx] : null,
                   }}
                 />
               ) : (
                 <td
                   key={"2"}
                   dangerouslySetInnerHTML={{
-                    __html: tmp2.length == tmp0.length ? tmp2[idx] : null,
+                    __html: tmp2[0] != "None" ? tmp2[idx] : null,
                   }}
                 />
               )}
