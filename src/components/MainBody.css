@@ -1,0 +1,23 @@
+.tone1 {
+  color: green;
+}
+.tone2 {
+  color: magenta;
+}
+.tone3 {
+  color: blue;
+}
+.tone4 {
+  color: red;
+}
+.tone5 {
+  color: gray;
+}
+.tone6 {
+  color: black;
+}
+
+th {
+  font-weight: bolder;
+  background-color: #eaffff ;
+}
