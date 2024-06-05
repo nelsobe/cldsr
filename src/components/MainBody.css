@@ -20,4 +20,12 @@
 th {
   font-weight: bolder;
   background-color: #eaffff ;
+  vertical-align: top;
+  outline-style: solid;
+  outline-width: thin;
+  outline-color: #e0e0e0;
+}
+
+td {
+  vertical-align: top;
 }

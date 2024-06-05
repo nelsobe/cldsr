@@ -3,11 +3,11 @@ import React from "react";
 export default function Title(props) {
   const h1style = {
     textAlign: "center",
-    fontSize: 1.7 * props.siz,
+    fontSize: 1.4 * props.siz,
     margin: 0,
     marginTop: 6,
   };
-  const h2style = { ...h1style, fontSize: 1.4 * props.siz };
+  const h2style = { ...h1style, fontSize: 1.2 * props.siz };
 
   return (
     <div>

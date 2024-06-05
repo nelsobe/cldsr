@@ -36,7 +36,7 @@ export default function MainBody(props) {
   const tabstyle = {
     fontSize: 1.0 * props.siz,
     margin: 0,
-    marginTop: 46,
+    marginTop: 16,
   };
 
   return (
