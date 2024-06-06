@@ -73,26 +73,31 @@ function App() {
   function load(langs, book, chap) {
     const bk = allbooks[book].id;
 
+    // Get chapter (colored or not)
     const ch = langs.map((lang) => {
       if (["simp", "trad"].includes(lang)) return "c" + chap;
       else return chap;
     });
 
-    const sets = [setText0, setText1, setText2];
+    const settexts = [setText0, setText1, setText2];
 
     console.log("Loading: ", langs, bk, ch);
 
+    /* Load each requested document from web server (see URL).  
+       This is a promise-based fetch and so things will come back at some point.  
+       When that happens, things will get rendered. 
+    */
     langs.map((lang, idx) => {
       if (lang != "None")
         fetch(`${URL}/contents/${lang}/${bk}/${ch[idx]}.txt`)
           .then((response) => response.text())
-          .then((data) => sets[idx](data));
+          .then((data) => settexts[idx](data));
       else sets[idx]("None");
     });
   }
 
   //////////////////////////////////////////////////////////////////////
-  // This does the initial loading of the books
+  // This useEffect() does the initial loading of the docuents when the App is first loaded and started.
   useEffect(() => {
     load(langs, loc.book, loc.chap);
   }, []);
@@ -102,9 +107,10 @@ function App() {
   //////////////////////////////////////////////////////////////////////
   return (
     <div>
-      // These first two are popup windows (initially invisible)
+      {/* These first two are popup windows (initially invisible) */}
       <Jssel vis={booksMenuVis} jsselClose={jsselClose} siz={siz} />
       <Jslangs vis={langsMenuVis} jslangsClose={jslangsClose} siz={siz} />
+      {/* Now for the actual header, title, and body */}
       <Header
         siz={siz}
         jsnav={jsnav}
@@ -121,14 +127,7 @@ function App() {
         jssiz={jssiz}
       />
       <Title loc={loc} siz={siz} />
-      <MainBody
-        siz={siz}
-        text0={text0}
-        text1={text1}
-        text2={text2}
-        colors={colors}
-      />
-      {/* <Footer siz={siz} /> */}
+      <MainBody siz={siz} text={[text0, text1, text2]} colors={colors} />
     </div>
   );
 }

@@ -44,21 +44,20 @@ export default function Jssel(props) {
     props.vis && (
       <Dialog open={props.vis}>
         <InputLabel>Select volume, book, and chapter:</InputLabel>
+        {/* This is the vols select.  On a change, populate possible books, set to first book, populate possible chapters, set to first chapter */}
         <Select
+          id="VolSelect"
           style={SelectStyle}
           value={vol}
           onChange={(event) => {
             const newvol = event.target.value;
             const newbooks = volbooks[newvol];
-            console.log(newbooks);
             const newBook = newbooks[0];
-            console.log(newBook);
             const newchap = allbooks[newBook].start;
-            console.log(event.target);
+
             setVol(newvol);
             setBooks(newbooks);
             setBook(newBook);
-            setChap(newchap);
             setChaps(
               Array(allbooks[newBook].end)
                 .fill()
@@ -66,6 +65,7 @@ export default function Jssel(props) {
                   return idx + 1;
                 })
             );
+            setChap(newchap);
           }}
         >
           {vols.map((v) => {
@@ -76,14 +76,15 @@ export default function Jssel(props) {
             );
           })}
         </Select>
+        {/* This is the book selector.  Don't display it if the volume is D&C.  When a change is made, populate possible chapters and set to first chapter. */}
         {vol != "Doctrine and Covenants" && (
           <Select
+            id="BookSelect"
             style={SelectStyle}
             value={book}
             onChange={(event) => {
               const newBook = event.target.value;
               setBook(newBook);
-              setChap(allbooks[newBook].start);
               setChaps(
                 Array(allbooks[newBook].end)
                   .fill()
@@ -91,6 +92,7 @@ export default function Jssel(props) {
                     return idx + 1;
                   })
               );
+              setChap(allbooks[newBook].start);
             }}
           >
             {books.map((v, idx) => {
@@ -102,8 +104,10 @@ export default function Jssel(props) {
             })}
           </Select>
         )}
+        {/* This is the chapters select.  Don't display for books with only a single chapter (like Enos).  */}
         {chaps.length > 0 && (
           <Select
+            id="ChapterSelect"
             style={SelectStyle}
             value={chap}
             onChange={(event) => {
@@ -119,6 +123,7 @@ export default function Jssel(props) {
             })}
           </Select>
         )}
+        {/* The button that selects it all. */}
         <Button
           onClick={(event) => {
             event.preventDefault();
