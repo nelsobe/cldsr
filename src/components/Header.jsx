@@ -31,24 +31,40 @@ function Header(props) {
     width: 1.2 * props.siz,
   };
 
+  const navbarStyle = {
+    backgroundColor: "black",
+    color: "white",
+    position: "fixed",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: 3 * props.siz,
+    display: "flex",
+    justifyContent: "space-around",
+    alignItems: "center",
+    fontSize: 1.5 * props.siz,
+  };
+
+  const navbarImgStyle = {
+    height: 1.2 * props.siz,
+    margin: 0.1 * props.siz,
+  };
+
   return (
-    <AppBar style={appbarStyle}>
-      <ToolBar>
-        <img style={imgStyle} src={shu} onClick={props.jssel} />
-        <Box style={boxStyle} />
-        <img style={imgStyle} src={yan} onClick={props.jslangs} />
-        <Box style={boxStyle} />
-        <img style={imgStyle} src={se} onClick={props.jscolors} />
-        <Box style={boxStyle} />
+    <div style={navbarStyle}>
+      <img style={imgStyle} src={shu} onClick={props.jssel} />
+      <img style={imgStyle} src={yan} onClick={props.jslangs} />
+      <img style={imgStyle} src={se} onClick={props.jscolors} />
+      <div>
         <img style={imgStyle} src={da} onClick={props.jssiz} id="jssizbig" />
         <img style={imgStyle} src={xiao} onClick={props.jssiz} />
-        <Box style={boxStyle} />
+      </div>
+      <div>
         <img style={imgStyle} src={xia} onClick={props.jsnav} id="jsnavinc" />
         <img style={imgStyle} src={shang} onClick={props.jsnav} id="jsnavdec" />
-        <Box style={boxStyle} />
-        <img style={imgStyle} src={question} onClick={props.jsabout} />
-      </ToolBar>
-    </AppBar>
+      </div>
+      <img style={imgStyle} src={question} onClick={props.jsabout} />
+    </div>
   );
 }
 
