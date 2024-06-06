@@ -15,26 +15,16 @@ import yan from "../assets/yan.jpg";
 import "./Header.css";
 
 function Header(props) {
-  function bookName() {
-    return "abc";
-    const tmp = allbooks.filter((bk) => {
-      return bookName.id === props.name;
-    });
-    console.log(tmp);
-    return tmp.book;
-  }
-
-  const imgStyle = {
-    height: 1.4 * props.siz,
-    margin: 0.0 * props.siz,
-  };
-
   const appbarStyle = {
     backgroundColor: "Black",
     height: 3 * props.siz,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+  };
+
+  const imgStyle = {
+    height: 1.4 * props.siz,
   };
 
   const boxStyle = {
@@ -51,12 +41,7 @@ function Header(props) {
         <img style={imgStyle} src={se} onClick={props.jscolors} />
         <Box style={boxStyle} />
         <img style={imgStyle} src={da} onClick={props.jssiz} id="jssizbig" />
-        <img
-          style={imgStyle}
-          src={xiao}
-          onClick={props.jssiz}
-          id="jssizsmall"
-        />
+        <img style={imgStyle} src={xiao} onClick={props.jssiz} />
         <Box style={boxStyle} />
         <img style={imgStyle} src={xia} onClick={props.jsnav} id="jsnavinc" />
         <img style={imgStyle} src={shang} onClick={props.jsnav} id="jsnavdec" />

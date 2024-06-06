@@ -17,6 +17,8 @@
   color: black;
 }
 
+/* The main verses table */
+
 th {
   font-weight: bolder;
   background-color: #eaffff ;
@@ -24,8 +26,10 @@ th {
   outline-style: solid;
   outline-width: thin;
   outline-color: #e0e0e0;
+  text-align: left;
 }
 
 td {
+  text-align: left;
   vertical-align: top;
 }

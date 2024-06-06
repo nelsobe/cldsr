@@ -3,22 +3,13 @@ import "./App.css";
 import Header from "./Header";
 import Title from "./Title";
 import MainBody from "./MainBody";
-import Footer from "./Footer";
 import Jssel from "./Jssel";
 import Jslangs from "./Jslangs";
 import allbooks from "./allbooks";
-import BooksMenu from "./BooksMenu";
-import {
-  Button,
-  Modal,
-  Box,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-} from "@mui/material";
 
+//////////////////////////////////////////////////////////////////////
 function App() {
+  const URL = "http://localhost:5173";
   const [loc, setLoc] = useState({ book: "1 Nephi", chap: 1 });
   const [langs, setLangs] = useState(["eng", "trad", "simp"]);
   const [text0, setText0] = useState();
@@ -29,6 +20,8 @@ function App() {
   const [siz, setSiz] = useState(16);
   const [colors, setColors] = useState(true);
 
+  //////////////////////////////////////////////////////////////////////
+  // Go to next/prev chapter
   function jsnav(event) {
     let newChap;
     if (event.target.id == "jsnavinc") newChap = loc.chap + 1;
@@ -36,49 +29,33 @@ function App() {
     const bookRecord = allbooks[loc.book];
     newChap = Math.max(Math.min(newChap, bookRecord.end), bookRecord.start);
     setLoc({ ...loc, chap: newChap });
-    load(langs[0], langs[1], langs[2], loc.book, newChap);
+    load(langs, loc.book, newChap);
   }
 
-  function jsselOpen(event) {
-    setBooksMenuVis(true);
-  }
-
+  //////////////////////////////////////////////////////////////////////
+  // Book select menu closed
   function jsselClose(newvol, newbook, newchap) {
     setBooksMenuVis(false);
     setLoc({ book: newbook, chap: newchap });
-    load(langs[0], langs[1], langs[2], newbook, newchap);
-    console.log("Got back: ", newvol, newbook, newchap);
+    load(langs, newbook, newchap);
   }
 
-  function jslangsOpen(event) {
-    setLangsMenuVis(true);
-  }
-  //
+  //////////////////////////////////////////////////////////////////////
+  // Languages select menu closed
   function jslangsClose(lang0, lang1, lang2) {
+    // Make langs menu invisible
     setLangsMenuVis(false);
+    // Rearrange to put None on the right
     if (lang1 === "None") {
       lang1 = lang2;
       lang2 = "None";
     }
     setLangs([lang0, lang1, lang2]);
-    load(lang0, lang1, lang2, loc.book, loc.chap);
-    // console.log("Langs: ", lang0, lang1, lang2);
-    // console.log("Langs: ", langs);
+    load(langs, loc.book, loc.chap);
   }
 
-  function loadAndRender() {
-    // Figure out exactly what to grab
-    const vl = allbooks[loc.book].vol;
-    const bk = allbooks[loc.book].id;
-    const ch = loc.chap;
-    console.log("Fetching: ", vl, bk, ch);
-  }
-
-  function jscolors(event) {
-    console.log(!colors);
-    setColors(!colors);
-  }
-
+  //////////////////////////////////////////////////////////////////////
+  // Change the text size
   function jssiz(event) {
     var newsiz;
     if (event.target.id == "jssizbig") newsiz = siz + 2;
@@ -87,55 +64,61 @@ function App() {
     console.log("Newsize: ", newsiz);
   }
 
+  //////////////////////////////////////////////////////////////////////
+  // The About (?) screen
   function jsabout(event) {}
 
-  function load(lang0, lang1, lang2, book, chap) {
-    const vl = allbooks[book].vol;
+  //////////////////////////////////////////////////////////////////////
+  // Load the needed books from the website and place into text0-text2
+  function load(langs, book, chap) {
     const bk = allbooks[book].id;
-    console.log("load: ", lang0);
-    let ch0, ch1, ch2;
-    if (["simp", "trad"].includes(lang0)) ch0 = "c" + chap;
-    else ch0 = chap;
-    if (["simp", "trad"].includes(lang1)) ch1 = "c" + chap;
-    else ch1 = chap;
-    if (["simp", "trad"].includes(lang2)) ch2 = "c" + chap;
-    else ch2 = chap;
 
-    console.log("Fetching: ", lang0, lang1, lang2, vl, bk, ch1);
+    const ch = langs.map((lang) => {
+      if (["simp", "trad"].includes(lang)) return "c" + chap;
+      else return chap;
+    });
 
-    fetch(`http://localhost:5173/contents/${lang0}/${bk}/${ch0}.txt`)
-      .then((response) => response.text())
-      .then((data) => setText0(data));
+    const sets = [setText0, setText1, setText2];
 
-    if (lang1 != "None")
-      fetch(`http://localhost:5173/contents/${lang1}/${bk}/${ch1}.txt`)
-        .then((response) => response.text())
-        .then((data) => setText1(data));
-    else setText1("None");
+    console.log("Loading: ", langs, bk, ch);
 
-    if (lang2 != "None")
-      fetch(`http://localhost:5173/contents/${lang2}/${bk}/${ch2}.txt`)
-        .then((response) => response.text())
-        .then((data) => setText2(data));
-    else setText2("None");
+    langs.map((lang, idx) => {
+      if (lang != "None")
+        fetch(`${URL}/contents/${lang}/${bk}/${ch[idx]}.txt`)
+          .then((response) => response.text())
+          .then((data) => sets[idx](data));
+      else sets[idx]("None");
+    });
   }
 
+  //////////////////////////////////////////////////////////////////////
+  // This does the initial loading of the books
   useEffect(() => {
-    load(langs[0], langs[1], langs[2], loc.book, loc.chap);
+    load(langs, loc.book, loc.chap);
   }, []);
 
+  //////////////////////////////////////////////////////////////////////
+  // This is what <App /> returns
+  //////////////////////////////////////////////////////////////////////
   return (
     <div>
+      // These first two are popup windows (initially invisible)
       <Jssel vis={booksMenuVis} jsselClose={jsselClose} siz={siz} />
       <Jslangs vis={langsMenuVis} jslangsClose={jslangsClose} siz={siz} />
       <Header
         siz={siz}
         jsnav={jsnav}
-        jssel={jsselOpen}
-        jslangs={jslangsOpen}
-        jscolors={jscolors}
-        jssiz={jssiz}
+        jssel={() => {
+          setBooksMenuVis(true);
+        }}
+        jslangs={() => {
+          setLangsMenuVis(true);
+        }}
+        jscolors={() => {
+          setColors(!colors);
+        }}
         jsabout={jsabout}
+        jssiz={jssiz}
       />
       <Title loc={loc} siz={siz} />
       <MainBody
@@ -150,5 +133,5 @@ function App() {
   );
 }
 
+//////////////////////////////////////////////////////////////////////
 export default App;
-//      <BooksMenu vis={booksMenuVis} closeBooksMenu={closeBooksMenu} />;

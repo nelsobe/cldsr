@@ -149,7 +149,7 @@ const volbooks = {
     "Jude",
     "Revelations",
   ],
-  "Doctrine and Covenants": [],
+  "Doctrine and Covenants": ["Doctrine and Covenants"],
 };
 
 export default allbooks;

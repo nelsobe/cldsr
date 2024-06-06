@@ -12,23 +12,6 @@ import {
 } from "@mui/material";
 
 export default function Jssel(props) {
-  const SelectStyle = {
-    //position: "absolute",
-    //top: "50%",
-    // left: "50%",
-    // transform: "translate(-50%, -50%)",
-    width: "auto",
-    height: 2 * props.siz + "px",
-    backgroundColor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    p: 0,
-  };
-
-  const MenuItemStyle = {
-    height: "12px",
-    p: 0,
-  };
   const [open, setOpen] = React.useState(false);
   const [vol, setVol] = useState("Book of Mormon");
   const [book, setBook] = useState("1 Nephi");
@@ -43,6 +26,20 @@ export default function Jssel(props) {
       })
   );
 
+  const SelectStyle = {
+    width: "auto",
+    height: 2 * props.siz + "px",
+    backgroundColor: "background.paper",
+    border: "2px solid #000",
+    boxShadow: 24,
+    p: 0,
+  };
+
+  const MenuItemStyle = {
+    height: "12px",
+    p: 0,
+  };
+
   return (
     props.vis && (
       <Dialog open={props.vis}>
@@ -54,14 +51,21 @@ export default function Jssel(props) {
             const newvol = event.target.value;
             const newbooks = volbooks[newvol];
             console.log(newbooks);
-            const newbook = newbooks[0];
-            console.log(newbook);
-            const newchap = allbooks[newbook].start;
+            const newBook = newbooks[0];
+            console.log(newBook);
+            const newchap = allbooks[newBook].start;
             console.log(event.target);
             setVol(newvol);
             setBooks(newbooks);
-            setBook(newbook);
+            setBook(newBook);
             setChap(newchap);
+            setChaps(
+              Array(allbooks[newBook].end)
+                .fill()
+                .map((_, idx) => {
+                  return idx + 1;
+                })
+            );
           }}
         >
           {vols.map((v) => {
@@ -72,30 +76,32 @@ export default function Jssel(props) {
             );
           })}
         </Select>
-        <Select
-          style={SelectStyle}
-          value={book}
-          onChange={(event) => {
-            const newBook = event.target.value;
-            setBook(newBook);
-            setChap(allbooks[newBook].start);
-            const tmpChaps = Array(allbooks[newBook].end)
-              .fill()
-              .map((_, idx) => {
-                return idx + 1;
-              });
-            console.log(tmpChaps);
-            setChaps(tmpChaps);
-          }}
-        >
-          {books.map((v, idx) => {
-            return (
-              <MenuItem key={idx} value={v}>
-                {v}
-              </MenuItem>
-            );
-          })}
-        </Select>
+        {vol != "Doctrine and Covenants" && (
+          <Select
+            style={SelectStyle}
+            value={book}
+            onChange={(event) => {
+              const newBook = event.target.value;
+              setBook(newBook);
+              setChap(allbooks[newBook].start);
+              setChaps(
+                Array(allbooks[newBook].end)
+                  .fill()
+                  .map((_, idx) => {
+                    return idx + 1;
+                  })
+              );
+            }}
+          >
+            {books.map((v, idx) => {
+              return (
+                <MenuItem key={idx} value={v}>
+                  {v}
+                </MenuItem>
+              );
+            })}
+          </Select>
+        )}
         {chaps.length > 0 && (
           <Select
             style={SelectStyle}

@@ -10,6 +10,7 @@ export default function Title(props) {
   const h2style = { ...h1style, fontSize: 1.2 * props.siz };
 
   const boxStyle = { height: 3.4 * props.siz };
+
   return (
     <div>
       <Box style={boxStyle} width="100%" />
