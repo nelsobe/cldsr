@@ -92,7 +92,7 @@ function App() {
         fetch(`${URL}/contents/${lang}/${bk}/${ch[idx]}.txt`)
           .then((response) => response.text())
           .then((data) => settexts[idx](data));
-      else sets[idx]("None");
+      else settexts[idx]("None");
     });
   }
 
