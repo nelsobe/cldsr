@@ -5,6 +5,7 @@ import Title from "./Title";
 import MainBody from "./MainBody";
 import Jssel from "./Jssel";
 import Jslangs from "./Jslangs";
+import About from "./About";
 import allbooks from "./allbooks";
 
 //////////////////////////////////////////////////////////////////////
@@ -17,8 +18,10 @@ function App() {
   const [text2, setText2] = useState();
   const [booksMenuVis, setBooksMenuVis] = useState(false);
   const [langsMenuVis, setLangsMenuVis] = useState(false);
+  const [aboutVis, setAboutVis] = useState(false);
   const [siz, setSiz] = useState(16);
   const [colors, setColors] = useState(true);
+  const [hist, setHist] = useState(1.0);
 
   //////////////////////////////////////////////////////////////////////
   // Go to next/prev chapter
@@ -68,6 +71,12 @@ function App() {
   // The About (?) screen
   function jsabout(event) {}
 
+  function aboutClose(value) {
+    setAboutVis(false);
+    console.log(value);
+    setHist(value);
+  }
+
   //////////////////////////////////////////////////////////////////////
   // Load the needed books from the website and place into text0-text2
   function load(langs, book, chap) {
@@ -107,9 +116,10 @@ function App() {
   //////////////////////////////////////////////////////////////////////
   return (
     <div>
-      {/* These first two are popup windows (initially invisible) */}
+      {/* These first three are popup windows (initially invisible) */}
       <Jssel vis={booksMenuVis} jsselClose={jsselClose} siz={siz} />
       <Jslangs vis={langsMenuVis} jslangsClose={jslangsClose} siz={siz} />
+      <About vis={aboutVis} aboutClose={aboutClose} siz={siz} loc={loc} />
       {/* Now for the actual header, title, and body */}
       <Header
         siz={siz}
@@ -123,7 +133,9 @@ function App() {
         jscolors={() => {
           setColors(!colors);
         }}
-        jsabout={jsabout}
+        jsabout={() => {
+          setAboutVis(true);
+        }}
         jssiz={jssiz}
       />
       <Title loc={loc} siz={siz} />
