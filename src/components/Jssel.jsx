@@ -54,35 +54,57 @@ export default function Jssel(props) {
     fontSize: 1.2 * props.siz,
   };
 
+  function changeVol(event) {
+    const newvol = event.target.value;
+    const newbooks = volbooks[newvol];
+    const newBook = newbooks[0];
+    const newchap = allbooks[newBook].start;
+
+    setVol(newvol);
+    setBooks(newbooks);
+    setBook(newBook);
+    setChaps(
+      Array(allbooks[newBook].end)
+        .fill()
+        .map((_, idx) => {
+          return idx + 1;
+        })
+    );
+    setChap(newchap);
+  }
+
+  function changeBook(event) {
+    const newBook = event.target.value;
+    setBook(newBook);
+    setChaps(
+      Array(allbooks[newBook].end)
+        .fill()
+        .map((_, idx) => {
+          return idx + 1;
+        })
+    );
+    setChap(allbooks[newBook].start);
+    if (allbooks[newBook].start == 0) {
+      props.jsselClose(vol, newBook, 0);
+    }
+  }
+
+  function changeChap(event) {
+    setChap(event.target.value);
+    props.jsselClose(vol, book, event.target.value);
+  }
+
   return (
     props.vis && (
-      <div style={jsselStyle} id="selectMenu" class="optionsMenu hidden popup">
-        <p style={tdStyle}>Please choose a book to read:</p>
+      <div style={jsselStyle}>
+        <p style={tdStyle}>Choose a book to read:</p>
         {/* This is the vols select.  On a change, populate possible books, set to first book, populate possible chapters, set to first chapter */}
         <div>
-          {" "}
           <select
             id="VolSelect"
             style={SelectStyle}
             value={vol}
-            onChange={(event) => {
-              const newvol = event.target.value;
-              const newbooks = volbooks[newvol];
-              const newBook = newbooks[0];
-              const newchap = allbooks[newBook].start;
-
-              setVol(newvol);
-              setBooks(newbooks);
-              setBook(newBook);
-              setChaps(
-                Array(allbooks[newBook].end)
-                  .fill()
-                  .map((_, idx) => {
-                    return idx + 1;
-                  })
-              );
-              setChap(newchap);
-            }}
+            onChange={changeVol}
           >
             {vols.map((v) => {
               return (
@@ -100,18 +122,7 @@ export default function Jssel(props) {
               id="BookSelect"
               style={SelectStyle}
               value={book}
-              onChange={(event) => {
-                const newBook = event.target.value;
-                setBook(newBook);
-                setChaps(
-                  Array(allbooks[newBook].end)
-                    .fill()
-                    .map((_, idx) => {
-                      return idx + 1;
-                    })
-                );
-                setChap(allbooks[newBook].start);
-              }}
+              onChange={changeBook}
             >
               {books.map((v, idx) => {
                 return (
@@ -130,9 +141,7 @@ export default function Jssel(props) {
               id="ChapterSelect"
               style={SelectStyle}
               value={chap}
-              onChange={(event) => {
-                setChap(event.target.value);
-              }}
+              onChange={changeChap}
             >
               {chaps.map((v) => {
                 return (
@@ -143,16 +152,6 @@ export default function Jssel(props) {
               })}
             </select>
           )}
-        </div>
-        <div>
-          <button
-            onClick={(event) => {
-              event.preventDefault();
-              props.jsselClose(vol, book, chap);
-            }}
-          >
-            OK
-          </button>
         </div>
       </div>
     )

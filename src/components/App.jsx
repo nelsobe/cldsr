@@ -12,7 +12,7 @@ import allbooks from "./allbooks";
 function App() {
   const URL = "http://localhost:5173";
   const [loc, setLoc] = useState({ book: "1 Nephi", chap: 1 });
-  const [langs, setLangs] = useState(["eng", "trad", "simp"]);
+  const [langs, setLangs] = useState(["eng", "trad", "None"]);
   const [text0, setText0] = useState();
   const [text1, setText1] = useState();
   const [text2, setText2] = useState();
@@ -46,6 +46,7 @@ function App() {
   //////////////////////////////////////////////////////////////////////
   // Languages select menu closed
   function jslangsClose(lang0, lang1, lang2) {
+    console.log("Langs: ", lang0, lang1, lang2);
     // Make langs menu invisible
     setLangsMenuVis(false);
     // Rearrange to put None on the right
@@ -54,7 +55,7 @@ function App() {
       lang2 = "None";
     }
     setLangs([lang0, lang1, lang2]);
-    load(langs, loc.book, loc.chap);
+    load([lang0, lang1, lang2], loc.book, loc.chap);
   }
 
   //////////////////////////////////////////////////////////////////////

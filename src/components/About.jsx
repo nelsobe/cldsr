@@ -5,7 +5,7 @@ export default function About(props) {
   const [hist, setHist] = useState(1.0);
 
   const aboutStyle = {
-    background: "#afa8ff",
+    background: "#efe8ff",
     textAlign: "center",
     position: "fixed",
     top: 3.0 * props.siz,
