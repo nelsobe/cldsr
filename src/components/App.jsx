@@ -78,6 +78,42 @@ function App() {
   }
 
   //////////////////////////////////////////////////////////////////////
+  // Caching stuff
+  function cacheWrite(lang, id, chap, s) {
+    let key = lang + id + chap;
+    let success;
+    do {
+      success = true;
+      try {
+        window.sessionStorage.setItem(key, s);
+      } catch (error) {
+        success = false;
+        console.log(error);
+        console.log("Cache contents:");
+        for (let i = 0; i < window.sessionStorage.length; i++)
+          console.log(`   ${window.sessionStorage.key(i)}`);
+        // Kick out oldest entry
+        let k = window.sessionStorage.key(0);
+        window.sessionStorage.removeItem(k);
+        console.log(`cache remove: ${k}`);
+      }
+    } while (success == false);
+    console.log("cache write: " + key);
+  }
+
+  function cacheLookup(lang, id, chap) {
+    let key = lang + id + chap;
+    console.log("cacheLookup: " + key);
+    let s = window.sessionStorage.getItem(key);
+    if (s != null) {
+      console.log("  Found it...");
+      return s;
+    }
+    console.log("  Didn't find it...");
+    return null;
+  }
+
+  //////////////////////////////////////////////////////////////////////
   // Load the needed books from the website and place into text0-text2
   function load(langs, book, chap) {
     const bk = allbooks[book].id;
@@ -97,11 +133,21 @@ function App() {
        When that happens, things will get rendered. 
     */
     langs.map((lang, idx) => {
-      if (lang != "None")
-        fetch(`${URL}/contents/${lang}/${bk}/${ch[idx]}.txt`)
-          .then((response) => response.text())
-          .then((data) => settexts[idx](data));
-      else settexts[idx]("None");
+      if (lang != "None") {
+        // Get it from cache if we have it
+        let s = cacheLookup(lang, allbooks[book].id, chap);
+        if (s) {
+          settexts[idx](s);
+        } else {
+          // Must fetch it
+          fetch(`${URL}/contents/${lang}/${bk}/${ch[idx]}.txt`)
+            .then((response) => response.text())
+            .then((data) => {
+              settexts[idx](data);
+              cacheWrite(lang, allbooks[book].id, chap, data);
+            });
+        }
+      } else settexts[idx]("None");
     });
   }
 

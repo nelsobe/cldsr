@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import allbooks from "./allbooks";
 
 export default function About(props) {
   const [hist, setHist] = useState(1.0);
