@@ -47,6 +47,7 @@ export default function Jslangs(props) {
             value={lang0}
             onChange={(event) => {
               setlang0(event.target.value);
+              props.jslangsClose(event.target.value, lang1, lang2);
             }}
           >
             {[
@@ -69,6 +70,7 @@ export default function Jslangs(props) {
             value={lang1}
             onChange={(event) => {
               setlang1(event.target.value);
+              props.jslangsClose(lang0, event.target.value, lang2);
             }}
           >
             {[
@@ -92,6 +94,7 @@ export default function Jslangs(props) {
             value={lang2}
             onChange={(event) => {
               setlang2(event.target.value);
+              props.jslangsClose(lang0, lang1, event.target.value);
             }}
           >
             {[
@@ -109,15 +112,6 @@ export default function Jslangs(props) {
             })}
           </select>
         </div>
-        <button
-          style={SelectStyle}
-          onClick={(event) => {
-            event.preventDefault();
-            props.jslangsClose(lang0, lang1, lang2);
-          }}
-        >
-          OK
-        </button>
       </div>
     )
   );
