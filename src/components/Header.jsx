@@ -1,9 +1,4 @@
 import React from "react";
-import allbooks from "./allbooks";
-import AppBar from "@mui/material/AppBar";
-import Button from "@mui/material/Button";
-import ToolBar from "@mui/material/ToolBar";
-import Box from "@mui/material/Box";
 import da from "../assets/da.jpg";
 import question from "../assets/question.jpg";
 import se from "../assets/se.jpg";
@@ -14,20 +9,8 @@ import xiao from "../assets/xiao.jpg";
 import yan from "../assets/yan.jpg";
 
 function Header(props) {
-  const appbarStyle = {
-    backgroundColor: "Black",
-    height: 3 * props.siz,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  };
-
   const imgStyle = {
     height: 1.4 * props.siz,
-  };
-
-  const boxStyle = {
-    width: 1.2 * props.siz,
   };
 
   const navbarStyle = {
@@ -42,11 +25,6 @@ function Header(props) {
     justifyContent: "space-around",
     alignItems: "center",
     fontSize: 1.5 * props.siz,
-  };
-
-  const navbarImgStyle = {
-    height: 1.2 * props.siz,
-    margin: 0.1 * props.siz,
   };
 
   return (

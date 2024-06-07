@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Button, Dialog, InputLabel, MenuItem, Select } from "@mui/material";
 
 export default function Jslangs(props) {
-  const LangsStyle = {
+  const [lang0, setlang0] = useState("eng");
+  const [lang1, setlang1] = useState("trad");
+  const [lang2, setlang2] = useState("None");
+
+  const langsStyle = {
     background: "#ffcfc8",
     textAlign: "left",
     position: "fixed",
@@ -12,25 +15,11 @@ export default function Jslangs(props) {
     fontSize: 1.0 * props.siz,
   };
 
-  const [open, setOpen] = React.useState(false);
-
-  const [lang0, setlang0] = useState("eng");
-  const [lang1, setlang1] = useState("trad");
-  const [lang2, setlang2] = useState("None");
-
-  const SelectStyle = {
+  const selStyle = {
     width: "auto",
     height: 2 * props.siz + "px",
     backgroundColor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    p: 0,
-    // borderStyle: "none",
-    borderWidth: 1,
-    // position: "fixed",
-    // top: 0,
-    // left: 0,
-    // padding: 20,
+    border: "1px solid #000",
   };
 
   const tdStyle = {
@@ -39,11 +28,11 @@ export default function Jslangs(props) {
 
   return (
     props.vis && (
-      <div style={LangsStyle}>
+      <div style={langsStyle}>
         <p style={tdStyle}>Select languages:</p>
         <div>
           <select
-            style={SelectStyle}
+            style={selStyle}
             value={lang0}
             onChange={(event) => {
               setlang0(event.target.value);
@@ -66,7 +55,7 @@ export default function Jslangs(props) {
         </div>
         <div>
           <select
-            style={SelectStyle}
+            style={selStyle}
             value={lang1}
             onChange={(event) => {
               setlang1(event.target.value);
@@ -90,7 +79,7 @@ export default function Jslangs(props) {
         </div>
         <div>
           <select
-            style={SelectStyle}
+            style={selStyle}
             value={lang2}
             onChange={(event) => {
               setlang2(event.target.value);

@@ -8,11 +8,12 @@ export default function MainBody(props) {
 
   var tmp0, tmp1, tmp2;
 
-  // Keep color and prepare text to render
+  // Prepare text to render
+  // Keep color
   if (props.colors) {
     [tmp0, tmp1, tmp2] = props.text.map((s) => s.trim().split("\n"));
   } else {
-    // Toss color and prepare text to render
+    // Toss color
     [tmp0, tmp1, tmp2] = props.text.map((s) =>
       s
         .trim()

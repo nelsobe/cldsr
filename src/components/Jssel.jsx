@@ -1,31 +1,10 @@
 import React, { useState } from "react";
 import { vols, allbooks, volbooks } from "./allbooks";
-import {
-  Button,
-  Dialog,
-  Modal,
-  Box,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-} from "@mui/material";
 
 export default function Jssel(props) {
-  const jsselStyle = {
-    background: "#cfffc8",
-    textAlign: "left",
-    position: "fixed",
-    top: 3.0 * props.siz,
-    left: 0,
-    padding: 20,
-    fontSize: 1.0 * props.siz,
-  };
-  const [open, setOpen] = React.useState(false);
   const [vol, setVol] = useState("Book of Mormon");
   const [book, setBook] = useState("1 Nephi");
   const [chap, setChap] = useState(1);
-
   const [books, setBooks] = useState(volbooks["Book of Mormon"]);
   const [chaps, setChaps] = useState(
     Array(allbooks["1 Nephi"].end)
@@ -35,19 +14,21 @@ export default function Jssel(props) {
       })
   );
 
-  const SelectStyle = {
+  const jsselStyle = {
+    background: "#cfffc8",
+    textAlign: "left",
+    position: "fixed",
+    top: 3.0 * props.siz,
+    left: 0,
+    padding: 20,
+    fontSize: 1.0 * props.siz,
+  };
+
+  const selStyle = {
     width: "auto",
     height: 2 * props.siz + "px",
     backgroundColor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    p: 0,
-    // borderStyle: "none",
-    borderWidth: 1,
-    // position: "fixed",
-    // top: 0,
-    // left: 0,
-    // padding: 20,
+    border: "1px solid #000",
   };
 
   const tdStyle = {
@@ -102,7 +83,7 @@ export default function Jssel(props) {
         <div>
           <select
             id="VolSelect"
-            style={SelectStyle}
+            style={selStyle}
             value={vol}
             onChange={changeVol}
           >
@@ -120,7 +101,7 @@ export default function Jssel(props) {
           {vol != "Doctrine and Covenants" && (
             <select
               id="BookSelect"
-              style={SelectStyle}
+              style={selStyle}
               value={book}
               onChange={changeBook}
             >
@@ -139,7 +120,7 @@ export default function Jssel(props) {
           {chaps.length > 0 && (
             <select
               id="ChapterSelect"
-              style={SelectStyle}
+              style={selStyle}
               value={chap}
               onChange={changeChap}
             >
