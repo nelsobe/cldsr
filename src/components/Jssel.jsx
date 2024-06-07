@@ -65,14 +65,10 @@ export default function Jssel(props) {
         })
     );
     setChap(allbooks[newBook].start);
-    if (allbooks[newBook].start == 0) {
-      props.jsselClose(vol, newBook, 0);
-    }
   }
 
   function changeChap(event) {
     setChap(event.target.value);
-    props.jsselClose(vol, book, event.target.value);
   }
 
   return (
@@ -133,6 +129,16 @@ export default function Jssel(props) {
               })}
             </select>
           )}
+        </div>
+        <div>
+          <button
+            style={selStyle}
+            onClick={() => {
+              props.jsselClose(vol, book, chap);
+            }}
+          >
+            OK
+          </button>
         </div>
       </div>
     )
