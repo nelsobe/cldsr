@@ -28,3 +28,18 @@ header h1 {
 */
 
 
+  	/* The popup menus (language select, chapter select, about box) */
+  	.optionsMenu {
+  	  border-style: none;
+  	  border-width: 10px;
+  	  position: fixed;
+  	  top: 0px;
+  	  left: 0px;
+  	  padding: 20px;
+  	}
+  
+  	/* Book selection menu */
+  	#selectMenu {
+  	  background: rgb(207, 245, 207);
+  	  /* display:none; */
+  	}
