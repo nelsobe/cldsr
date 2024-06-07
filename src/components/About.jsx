@@ -14,7 +14,7 @@ export default function About(props) {
   };
 
   function updateHist(event) {
-    setHist(event.target.value);
+    setHist(parseFloat(event.target.value));
   }
 
   function aboutClose() {
@@ -28,10 +28,10 @@ export default function About(props) {
         <p> Eng, 简体, 繁體, PY</p>
         <p>Brent Nelson, May 2024</p>
         <p id="aboutChap">
-          {props.loc.book}{" "}
-          {(props.loc.book == "D&C" && "Section") ||
-            (String(props.loc.chap) !== "0" && "Chapter")}{" "}
-          {String(props.loc.chap) != "0" && props.loc.chap}
+          {props.book}{" "}
+          {(props.book == "D&C" && "Section") ||
+            (String(props.chap) !== "0" && "Chapter")}{" "}
+          {String(props.chap) != "0" && props.chap}
         </p>
         <p>Text size = {props.siz}</p>
         <p>

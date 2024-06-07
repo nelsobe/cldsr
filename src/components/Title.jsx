@@ -16,10 +16,10 @@ export default function Title(props) {
       <Box style={boxStyle} width="100%" />
       <h1 style={h1style}>Welcome to CLDSR - Chinese Scriptures</h1>
       <h2 style={h2style}>
-        {props.loc.book}{" "}
-        {(props.loc.book == "D&C" && "Section") ||
-          (String(props.loc.chap) !== "0" && "Chapter")}{" "}
-        {String(props.loc.chap) != "0" && props.loc.chap}
+        {props.book}{" "}
+        {(props.book == "D&C" && "Section") ||
+          (String(props.chap) !== "0" && "Chapter")}{" "}
+        {String(props.chap) != "0" && props.chap}
       </h2>
     </div>
   );

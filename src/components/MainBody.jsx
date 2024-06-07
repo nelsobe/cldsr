@@ -4,13 +4,14 @@ import "./MainBody.css";
 export default function MainBody(props) {
   // Wait until data is actually loaded
   if (!props.text[0] || !props.text[1] || !props.text[2])
-    return <h1>Incomplete</h1>;
+    return <h1>Loading...</h1>;
 
   var tmp0, tmp1, tmp2;
 
   // Prepare text to render
   // Keep color
-  if (props.colors) {
+  console.log("MainBody: ", props.colors);
+  if (props.colors === "colors") {
     [tmp0, tmp1, tmp2] = props.text.map((s) => s.trim().split("\n"));
   } else {
     // Toss color

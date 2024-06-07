@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from "react";
+import Cookies from "js-cookie";
 
 export default function Jslangs(props) {
-  const [lang0, setlang0] = useState("eng");
-  const [lang1, setlang1] = useState("trad");
-  const [lang2, setlang2] = useState("None");
+  const [lang0, setlang0] = useState(
+    Cookies.get("cldsLangs") ? Cookies.get("cldsLangs")[0] : "eng"
+  );
+  const [lang1, setlang1] = useState(
+    Cookies.get("cldsLangs") ? Cookies.get("cldsLangs")[1] : "trad"
+  );
+  const [lang2, setlang2] = useState(
+    Cookies.get("cldsLangs") ? Cookies.get("cldsLangs")[2] : "None"
+  );
 
   const langsStyle = {
     background: "#ffcfc8",

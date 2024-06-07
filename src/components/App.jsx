@@ -6,40 +6,53 @@ import Jssel from "./Jssel";
 import Jslangs from "./Jslangs";
 import About from "./About";
 import allbooks from "./allbooks";
+import tradHist from "../assets/tradHist";
+import simpHist from "../assets/simpHist";
+import Cookies from "js-cookie";
+import { HTMLToJSON } from "html-to-json-parser";
 
 //////////////////////////////////////////////////////////////////////
 function App() {
   const URL = "http://localhost:5173";
-  const [loc, setLoc] = useState({ book: "1 Nephi", chap: 1 });
-  const [langs, setLangs] = useState(["eng", "trad", "None"]);
+
+  const [book, setBook] = useState(Cookies.get("cldsBook") || "1 Nephi");
+  const [chap, setChap] = useState(Cookies.get("cldsChap") || 1);
+  const [lang0, setLang0] = useState(Cookies.get("cldsLang0") || "eng");
+  const [lang1, setLang1] = useState(Cookies.get("cldsLang1") || "trad");
+  const [lang2, setLang2] = useState(Cookies.get("cldsLang2") || "None");
   const [text0, setText0] = useState();
   const [text1, setText1] = useState();
   const [text2, setText2] = useState();
   const [booksMenuVis, setBooksMenuVis] = useState(false);
   const [langsMenuVis, setLangsMenuVis] = useState(false);
   const [aboutVis, setAboutVis] = useState(false);
-  const [siz, setSiz] = useState(16);
-  const [colors, setColors] = useState(true);
-  const [hist, setHist] = useState(1.0);
+  const [siz, setSiz] = useState(Cookies.get("cldsSiz") || 16);
+  const [colors, setColors] = useState(Cookies.get("cldsColors") || "nocolors");
+  const [hist, setHist] = useState(Cookies.get("cldsHist") || 1.0);
 
   //////////////////////////////////////////////////////////////////////
   // Go to next/prev chapter
   function jsnav(event) {
     let newChap;
-    if (event.target.id == "jsnavinc") newChap = loc.chap + 1;
-    else newChap = loc.chap - 1;
-    const bookRecord = allbooks[loc.book];
+    if (event.target.id == "jsnavinc") newChap = chap + 1;
+    else newChap = chap - 1;
+    const bookRecord = allbooks[book];
     newChap = Math.max(Math.min(newChap, bookRecord.end), bookRecord.start);
-    setLoc({ ...loc, chap: newChap });
-    load(langs, loc.book, newChap);
+    setChap(newChap);
+    Cookies.set("cldsChap", newChap);
+    Cookies.set("cldsBook", book);
+    load([lang0, lang1, lang2], book, newChap);
   }
 
   //////////////////////////////////////////////////////////////////////
   // Book select menu closed
   function jsselClose(newvol, newbook, newchap) {
     setBooksMenuVis(false);
-    setLoc({ book: newbook, chap: newchap });
-    load(langs, newbook, newchap);
+    setBook(newbook);
+    setChap(newchap);
+    Cookies.set("cldsBook", newbook);
+    Cookies.set("cldsChap", newchap);
+    load([lang0, lang1, lang2], newbook, newchap);
   }
 
   //////////////////////////////////////////////////////////////////////
@@ -53,17 +66,23 @@ function App() {
       lang1 = lang2;
       lang2 = "None";
     }
-    setLangs([lang0, lang1, lang2]);
-    load([lang0, lang1, lang2], loc.book, loc.chap);
+    setLang0(lang0);
+    setLang1(lang1);
+    setLang2(lang2);
+    Cookies.set("cldsLang0", lang0);
+    Cookies.set("cldsLang1", lang1);
+    Cookies.set("cldsLang2", lang2);
+    load([lang0, lang1, lang2], book, chap);
   }
 
   //////////////////////////////////////////////////////////////////////
   // Change the text size
   function jssiz(event) {
     var newsiz;
-    if (event.target.id == "jssizbig") newsiz = siz + 2;
-    else newsiz = siz - 2;
+    if (event.target.id == "jssizbig") newsiz = parseInt(siz) + 2;
+    else newsiz = parseInt(siz) - 2;
     setSiz(newsiz);
+    Cookies.set("cldsSiz", newsiz);
     console.log("Newsize: ", newsiz);
   }
 
@@ -73,8 +92,9 @@ function App() {
 
   function aboutClose(value) {
     setAboutVis(false);
-    console.log(value);
     setHist(value);
+    Cookies.set("cldsHist", value);
+    console.log("aboutClose: ", value);
   }
 
   //////////////////////////////////////////////////////////////////////
@@ -116,6 +136,7 @@ function App() {
   //////////////////////////////////////////////////////////////////////
   // Load the needed books from the website and place into text0-text2
   function load(langs, book, chap) {
+    console.log("Loading: ", langs, book, chap);
     const bk = allbooks[book].id;
 
     // Get chapter (colored or not)
@@ -137,24 +158,87 @@ function App() {
         // Get it from cache if we have it
         let s = cacheLookup(lang, allbooks[book].id, chap);
         if (s) {
-          settexts[idx](s);
+          const newData = colorizeData(s);
+          settexts[idx](newData);
         } else {
           // Must fetch it
           fetch(`${URL}/contents/${lang}/${bk}/${ch[idx]}.txt`)
             .then((response) => response.text())
             .then((data) => {
-              settexts[idx](data);
               cacheWrite(lang, allbooks[book].id, chap, data);
+              const newData = colorizeData(data);
+              settexts[idx](newData);
             });
         }
       } else settexts[idx]("None");
     });
+    window.scrollTo(0, 0); // Scroll to top of new page
   }
 
+  function toneChar(s) {
+    return s;
+    console.log("Got: ", s, "returning:  ", s.slice(-8, -7));
+    const tone = s.slice(-10, -9);
+    const ch = s.slice(-8, -7);
+    let loc = tradHist.findIndex((tmp) => tmp == ch);
+    console.log("toneChar: ch = ", ch, " loc = ", loc);
+    if (colors && loc != -1 && loc < tradHist.length * hist) {
+      // Return unchanged
+      return s;
+    } else {
+      // Turn black
+      return `<span class="tone6">${ch}</span>`;
+    }
+  }
+
+  // On hold until I figure out how to do this
+  function colorizeData(data) {
+    console.log("colorizing: ", data.slice(0, 200));
+    let newData = data.replace(
+      /<span class=\"tone[123456]\">.<\/span>/g,
+      (s) => {
+        return toneChar(s);
+      }
+    );
+    console.log("Colorized: ", newData.slice(0, 30));
+    return newData;
+    let arr = ["tone1", "tone2", "tone3", "tone4", "tone5"];
+
+    for (let tone = 0; tone < arr.length; tone++) {
+      toneName = "tone" + (tone + 1);
+      collection = $("." + toneName);
+      for (let i = collection.length - 1; i >= 0; i--) {
+        let elmt = collection[i];
+        histlen = hist.length;
+
+        // Set to proper color
+        let loc = hist.search(elmt.textContent);
+        // Gray will always be gray
+        if (params.colors == true && toneName == "tone5") {
+          elmt.classList.remove("toneblack");
+          elmt.classList.add(toneName);
+        }
+        // Only colorize if the loc is within histogram percent range
+        else if (
+          params.colors == true &&
+          loc != -1 &&
+          loc < histlen * params.histpercent
+        ) {
+          elmt.classList.remove("toneblack");
+          elmt.classList.add(toneName);
+        } // Else set to black
+        else elmt.classList.add("toneblack");
+      }
+    }
+  }
+
+  function loadHistogramDocs() {}
   //////////////////////////////////////////////////////////////////////
   // This useEffect() does the initial loading of the docuents when the App is first loaded and started.
   useEffect(() => {
-    load(langs, loc.book, loc.chap);
+    console.log("useEffect: ", book, chap);
+    load([lang0, lang1, lang2], book, chap);
+    loadHistogramDocs();
   }, []);
 
   //////////////////////////////////////////////////////////////////////
@@ -165,7 +249,13 @@ function App() {
       {/* These first three are popup windows (initially invisible) */}
       <Jssel vis={booksMenuVis} jsselClose={jsselClose} siz={siz} />
       <Jslangs vis={langsMenuVis} jslangsClose={jslangsClose} siz={siz} />
-      <About vis={aboutVis} aboutClose={aboutClose} siz={siz} loc={loc} />
+      <About
+        vis={aboutVis}
+        aboutClose={aboutClose}
+        siz={siz}
+        book={book}
+        chap={chap}
+      />
       {/* Now for the actual header, title, and body */}
       <Header
         siz={siz}
@@ -177,14 +267,20 @@ function App() {
           setLangsMenuVis(true);
         }}
         jscolors={() => {
-          setColors(!colors);
+          if (colors == "colors") {
+            Cookies.set("cldsColors", "nocolors");
+            setColors("nocolors");
+          } else {
+            Cookies.set("cldsColors", "colors");
+            setColors("colors");
+          }
         }}
         jsabout={() => {
           setAboutVis(true);
         }}
         jssiz={jssiz}
       />
-      <Title loc={loc} siz={siz} />
+      <Title book={book} chap={chap} siz={siz} />
       <MainBody siz={siz} text={[text0, text1, text2]} colors={colors} />
     </div>
   );
