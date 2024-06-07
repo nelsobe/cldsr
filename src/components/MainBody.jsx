@@ -30,6 +30,21 @@ export default function MainBody(props) {
     borderSpacing: 0.5 * props.siz,
   };
 
+  const thStyle = {
+    fontWeight: "bolder",
+    backgroundColor: "#eaffff",
+    verticalAlign: "top",
+    outlineStyle: "solid",
+    outlineWidth: "thin",
+    outlineColor: "#e0e0e0",
+    textAlign: "left",
+  };
+
+  const tdStyle = {
+    textAlign: "left",
+    verticalAlign: "top",
+  };
+
   return (
     <table style={tabstyle}>
       <tbody>
@@ -39,6 +54,7 @@ export default function MainBody(props) {
               {[tmp0, tmp1, tmp2].map((tmp, idx2) => {
                 return idx == 0 ? (
                   <th
+                    style={thStyle}
                     key={idx + "=" + idx2}
                     dangerouslySetInnerHTML={{
                       __html: tmp[0] != "None" ? tmp[idx] : null,
@@ -46,6 +62,7 @@ export default function MainBody(props) {
                   />
                 ) : (
                   <td
+                    style={tdStyle}
                     key={idx + "=" + idx2}
                     dangerouslySetInnerHTML={{
                       __html: tmp[0] != "None" ? tmp[idx] : null,

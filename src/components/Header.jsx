@@ -12,7 +12,6 @@ import shu from "../assets/shu.jpg";
 import xia from "../assets/xia.jpg";
 import xiao from "../assets/xiao.jpg";
 import yan from "../assets/yan.jpg";
-import "./Header.css";
 
 function Header(props) {
   const appbarStyle = {
