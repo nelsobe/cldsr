@@ -54,22 +54,24 @@ export default function MainBody(props) {
           return (
             <tr key={idx}>
               {[tmp0, tmp1, tmp2].map((tmp, idx2) => {
-                return idx == 0 ? (
+                return idx == 0 && tmp[0] != "None" ? (
                   <th
                     style={thStyle}
                     key={idx + "=" + idx2}
                     dangerouslySetInnerHTML={{
-                      __html: tmp[0] != "None" ? tmp[idx] : null,
+                      __html: tmp[idx],
                     }}
                   />
                 ) : (
-                  <td
-                    style={tdStyle}
-                    key={idx + "=" + idx2}
-                    dangerouslySetInnerHTML={{
-                      __html: tmp[0] != "None" ? tmp[idx] : null,
-                    }}
-                  />
+                  tmp[0] != "None" && (
+                    <td
+                      style={tdStyle}
+                      key={idx + "=" + idx2}
+                      dangerouslySetInnerHTML={{
+                        __html: tmp[idx],
+                      }}
+                    />
+                  )
                 );
               })}
             </tr>
