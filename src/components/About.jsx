@@ -35,8 +35,8 @@ export default function About(props) {
         </p>
         <p>Text size = {props.siz}</p>
         <p>
-          Screen size = <span id="screenWid"></span> x{" "}
-          <span id="screenHt"></span>
+          Screen size = <span>{screen.width}</span> x{" "}
+          <span>{screen.height}</span>
         </p>
         <label for="histp">Histogram Fraction (0.0-1.0): </label>
         <input
