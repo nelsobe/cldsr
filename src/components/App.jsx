@@ -122,6 +122,8 @@ function App() {
   }
 
   function cacheLookup(lang, id, chap) {
+    // window.sessionStorage.clear();
+    // return null;
     let key = lang + id + chap;
     console.log("cacheLookup: " + key);
     let s = window.sessionStorage.getItem(key);
