@@ -100,29 +100,34 @@ function App() {
   //////////////////////////////////////////////////////////////////////
   // Caching stuff
   function cacheWrite(lang, id, chap, s) {
+    // return;
     let key = lang + id + chap;
     let success;
+    console.log("Starting cache write: ", key);
     do {
       success = true;
       try {
         window.sessionStorage.setItem(key, s);
+        console.log("Cache write: ", key);
+        return;
       } catch (error) {
         success = false;
-        console.log(error);
-        console.log("Cache contents:");
-        for (let i = 0; i < window.sessionStorage.length; i++)
-          console.log(`   ${window.sessionStorage.key(i)}`);
-        // Kick out oldest entry
-        let k = window.sessionStorage.key(0);
+        console.log("Write failed: cache full...");
+        // console.log("Cache contents:");
+        // for (let i = 0; i < window.sessionStorage.length; i++)
+        // console.log(`   ${window.sessionStorage.key(i)}`);
+        // Kick out random entry
+        let k = window.sessionStorage.key(
+          Math.floor(Math.random() * window.sessionStorage.length)
+        );
         window.sessionStorage.removeItem(k);
-        console.log(`cache remove: ${k}`);
+        console.log(`Cache remove: ${k}`);
       }
     } while (success == false);
-    console.log("cache write: " + key);
   }
 
   function cacheLookup(lang, id, chap) {
-    // window.sessionStorage.clear();
+    window.sessionStorage.clear();
     // return null;
     let key = lang + id + chap;
     console.log("cacheLookup: " + key);
