@@ -38,19 +38,49 @@ export default function About(props) {
           Screen size = <span>{screen.width}</span> x{" "}
           <span>{screen.height}</span>
         </p>
-        <label for="histp">Histogram Fraction (0.0-1.0): </label>
-        <input
-          type="text"
-          id="histp"
-          name="histp"
-          value={hist}
-          onChange={(event) => {
-            setHist(event.target.value);
-          }}
-        />
         <div>
-          <button id="jsaboutBtn" onClick={aboutClose}>
-            OK
+          <label for="histp">Histogram Fraction (0.0-1.0): </label>
+          <input
+            type="text"
+            id="histp"
+            name="histp"
+            value={hist}
+            onChange={(event) => {
+              setHist(event.target.value);
+            }}
+          />
+        </div>
+        <div>
+          <button
+            style={{ marginTop: 0.7 * props.siz }}
+            id="jsaboutBtn"
+            onClick={aboutClose}
+          >
+            Change
+          </button>
+        </div>
+        <div>
+          <p style={{ marginBottom: 0.3 * props.siz }}>
+            Session Storage Cache has length = {window.sessionStorage.length}
+          </p>
+          <button
+            style={{ marginTop: 0.0 * props.siz }}
+            onClick={() => {
+              window.sessionStorage.clear();
+              aboutClose();
+            }}
+          >
+            Clear
+          </button>
+        </div>
+        <div>
+          <button
+            style={{ marginTop: 1.5 * props.siz }}
+            onClick={() => {
+              aboutClose();
+            }}
+          >
+            Close
           </button>
         </div>
       </div>
