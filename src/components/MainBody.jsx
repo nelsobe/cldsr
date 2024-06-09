@@ -58,6 +58,7 @@ export default function MainBody(props) {
                   <th
                     style={thStyle}
                     key={idx + "=" + idx2}
+                    // This call is not a good idea - it is here to take HTML source and just shove it into the location.  A better way would be to reformulate the scripture files as JSON objects and iterate over the characters one at a time, adding classes for color as I go.
                     dangerouslySetInnerHTML={{
                       __html: tmp[idx],
                     }}
@@ -67,6 +68,7 @@ export default function MainBody(props) {
                     <td
                       style={tdStyle}
                       key={idx + "=" + idx2}
+                      // This call is not a good idea - it is here to take HTML source and just shove it into the location.  A better way would be to reformulate the scripture files as JSON objects and iterate over the characters one at a time, adding classes for color as I go.
                       dangerouslySetInnerHTML={{
                         __html: tmp[idx],
                       }}
