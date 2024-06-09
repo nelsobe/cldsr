@@ -167,7 +167,8 @@ function App() {
           settexts[idx](newData);
         } else {
           // Must fetch it
-          // const URL = "https://nelsobe.github.io/cldsr";
+          // The URL of the website is: "https://nelsobe.github.io/cldsr"
+          // However, when hosted on github pages, you must use this form (not sure why), but it does work.
           const URL = "https://raw.githubusercontent.com/nelsobe/cldsr/main";
           fetch(`${URL}/contents/${lang}/${bk}/${ch[idx]}.txt`)
             .then((response) => response.text())
