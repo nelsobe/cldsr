@@ -125,7 +125,7 @@ function App() {
   }
 
   function cacheLookup(lang, id, chap) {
-    window.sessionStorage.clear();
+    // window.sessionStorage.clear();
     // return "This is come cache lookup text...";
     let key = lang + id + chap;
     console.log("cacheLookup: " + key);

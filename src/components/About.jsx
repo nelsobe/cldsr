@@ -62,6 +62,8 @@ export default function About(props) {
         <div>
           <p style={{ marginBottom: 0.3 * props.siz }}>
             Session Storage Cache has length = {window.sessionStorage.length}
+            {"    "}
+            (full is ~210)
           </p>
           <button
             style={{ marginTop: 0.0 * props.siz }}
