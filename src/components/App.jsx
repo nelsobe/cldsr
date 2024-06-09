@@ -13,8 +13,6 @@ import { HTMLToJSON } from "html-to-json-parser";
 
 //////////////////////////////////////////////////////////////////////
 function App() {
-  const URL = "https://nelsobe.github.io/testx";
-
   const [book, setBook] = useState(Cookies.get("cldsBook") || "1 Nephi");
   const [chap, setChap] = useState(Cookies.get("cldsChap") || 1);
   const [lang0, setLang0] = useState(Cookies.get("cldsLang0") || "eng");
@@ -128,7 +126,7 @@ function App() {
 
   function cacheLookup(lang, id, chap) {
     window.sessionStorage.clear();
-    return "This is come cache lookup text...";
+    // return "This is come cache lookup text...";
     let key = lang + id + chap;
     console.log("cacheLookup: " + key);
     let s = window.sessionStorage.getItem(key);
@@ -156,7 +154,7 @@ function App() {
 
     console.log("Loading: ", langs, bk, ch);
 
-    /* Load each requested document from web server (see URL).  
+    /* Load each requested document from web server.
        This is a promise-based get and so things will come back at some point.  
        When that happens, things will get rendered. 
     */
@@ -169,6 +167,7 @@ function App() {
           settexts[idx](newData);
         } else {
           // Must fetch it
+          const URL = "https://nelsobe.github.io/cldsr";
           fetch(`${URL}/contents/${lang}/${bk}/${ch[idx]}.txt`)
             .then((response) => response.text())
             .then((data) => {
