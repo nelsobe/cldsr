@@ -201,7 +201,6 @@ function App() {
     }
   }
 
-  // On hold until I figure out how to do this
   function colorizeData(data) {
     console.log("colorizing: ", data.slice(0, 200));
     let newData = data.replace(
