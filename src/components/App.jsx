@@ -167,8 +167,8 @@ function App() {
           settexts[idx](newData);
         } else {
           // Must fetch it
-          const URL = "https://nelsobe.github.io/cldsr";
-          // const URL = "https://raw.githubusercontent.com/nelsobe/cldsr/main";
+          // const URL = "https://nelsobe.github.io/cldsr";
+          const URL = "https://raw.githubusercontent.com/nelsobe/cldsr/main";
           fetch(`${URL}/contents/${lang}/${bk}/${ch[idx]}.txt`)
             .then((response) => response.text())
             .then((data) => {
