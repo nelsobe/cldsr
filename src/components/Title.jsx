@@ -14,7 +14,7 @@ export default function Title(props) {
   return (
     <div>
       <Box style={boxStyle} width="100%" />
-      <h1 style={h1style}>Welcome to CLDSR - Chinese Scriptures</h1>
+      <h1 style={h1style}>Welcome to CLDSr - Chinese Scriptures</h1>
       <h2 style={h2style}>
         {props.book}{" "}
         {(props.book == "D&C" && "Section") ||

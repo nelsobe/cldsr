@@ -169,8 +169,10 @@ function App() {
           // Must fetch it
           // The URL of the website is: "https://nelsobe.github.io/cldsr"
           // However, when hosted on github pages, you must use this form (not sure why), but it does work.
-          const URL = "https://raw.githubusercontent.com/nelsobe/cldsr/main";
-          fetch(`${URL}/contents/${lang}/${bk}/${ch[idx]}.txt`)
+          // Also, when running locally (npm run dev - leading to localhost:5173/cldsr - the raw.githuser... address works, making it easy to go back and forth).
+          const URL = `https://raw.githubusercontent.com/nelsobe/cldsr/main/contents/${lang}/${bk}/${ch[idx]}.txt`;
+          console.log("Fetching from: ", URL);
+          fetch(URL)
             .then((response) => response.text())
             .then((data) => {
               cacheWrite(lang, allbooks[book].id, chap, data);
