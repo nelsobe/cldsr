@@ -1,5 +1,11 @@
 # Notes on REACT and CLDSR
 
+## Notes on PLECO Web Reader
+
+After I got it ALL done I discovered that tapping characters to see their defs in PLECO doesn't work for the react version. I have checked the HTML being shown in the browser and it is the same as with the cldsc website consisting of things like: <span class="tone3">我</span>. But, PLECO won't let me tap it for definitions.
+
+Kind of renders this project moot. However, it was a great learning process.
+
 ## Notes on deploying to github pages
 
 NOTE: I _thought_ I had it working for just pushing pages up to repo (not doing a build). But now as I write this - I cannot reproduce it. So, for now I am just doing builds as documented here.
@@ -49,3 +55,7 @@ NOTE: I _thought_ I had it working for just pushing pages up to repo (not doing 
 
 - The normal address for a fetch doesn't work. That is, even though the URL is: "https://nelsobe.github.io/cldsr", you cannot just tack "/contents/eng/1Ne/t.txt" onto it and get your file.
   - Rather, you must use for your base address: "https://raw.githubusercontent.com/nelsobe/cldsr/main", where the "main" is the branch name. This seems to be what you use for either the PUSH or the BUILD method. And, even though the BUILD method serves from the gh-pages branch, the above main branch address works.
+
+### Notes on deploying to www.et.byu.edu
+
+- In vite.config.js, use: base: `"~nelson/cldsr",`
