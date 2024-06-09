@@ -59,3 +59,4 @@ NOTE: I _thought_ I had it working for just pushing pages up to repo (not doing 
 ### Notes on deploying to www.et.byu.edu
 
 - In vite.config.js, use: base: `"~nelson/cldsr",`
+- The dangerouslySetInnerHTML call in MainBody.jsx makes Safari unhappy (any re-renderings cause loss of word wrap in the Chinese sections). If I really wanted this to work correctly, I would need to reformulate the contents .txt files into JSON objects and iterate across them to render the text. Then I _think_ it would work.
