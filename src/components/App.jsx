@@ -32,8 +32,8 @@ function App() {
   // Go to next/prev chapter
   function jsnav(event) {
     let newChap;
-    if (event.target.id == "jsnavinc") newChap = chap + 1;
-    else newChap = chap - 1;
+    if (event.target.id == "jsnavinc") newChap = parseInt(chap) + 1;
+    else newChap = parseInt(chap) - 1;
     const bookRecord = allbooks[book];
     newChap = Math.max(Math.min(newChap, bookRecord.end), bookRecord.start);
     setChap(newChap);
@@ -163,8 +163,7 @@ function App() {
         // Get it from cache if we have it
         let s = cacheLookup(lang, allbooks[book].id, chap);
         if (s) {
-          const newData = colorizeData(s);
-          settexts[idx](newData);
+          settexts[idx](s);
         } else {
           // Must fetch it
           // The URL of the website is: "https://nelsobe.github.io/cldsr"
@@ -176,8 +175,7 @@ function App() {
             .then((response) => response.text())
             .then((data) => {
               cacheWrite(lang, allbooks[book].id, chap, data);
-              const newData = colorizeData(data);
-              settexts[idx](newData);
+              settexts[idx](data);
             });
         }
       } else settexts[idx]("None");
@@ -198,46 +196,6 @@ function App() {
     } else {
       // Turn black
       return `<span class="tone6">${ch}</span>`;
-    }
-  }
-
-  function colorizeData(data) {
-    console.log("colorizing: ", data.slice(0, 200));
-    let newData = data.replace(
-      /<span class=\"tone[123456]\">.<\/span>/g,
-      (s) => {
-        return toneChar(s);
-      }
-    );
-    console.log("Colorized: ", newData.slice(0, 30));
-    return newData;
-    let arr = ["tone1", "tone2", "tone3", "tone4", "tone5"];
-
-    for (let tone = 0; tone < arr.length; tone++) {
-      toneName = "tone" + (tone + 1);
-      collection = $("." + toneName);
-      for (let i = collection.length - 1; i >= 0; i--) {
-        let elmt = collection[i];
-        histlen = hist.length;
-
-        // Set to proper color
-        let loc = hist.search(elmt.textContent);
-        // Gray will always be gray
-        if (params.colors == true && toneName == "tone5") {
-          elmt.classList.remove("toneblack");
-          elmt.classList.add(toneName);
-        }
-        // Only colorize if the loc is within histogram percent range
-        else if (
-          params.colors == true &&
-          loc != -1 &&
-          loc < histlen * params.histpercent
-        ) {
-          elmt.classList.remove("toneblack");
-          elmt.classList.add(toneName);
-        } // Else set to black
-        else elmt.classList.add("toneblack");
-      }
     }
   }
 
