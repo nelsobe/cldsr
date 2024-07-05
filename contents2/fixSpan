@@ -1,0 +1,2 @@
+sed -I.bak -E 's@<span class="tone(.)">(.)</span>@\2\_\1@g' $1
+
